@@ -4,9 +4,9 @@ Operation PHP openwrt class, you can remotely wake up the computer, read online 
 1.edit config.php
 
 return array(
-	'url'      =>'http://route.xxx.me:1080',//route url
-	'username' =>'root',//route username
-	'password' =>'',//route password
+	'url'      =>'http://route.xxx.me:1080',
+	'username' =>'root',
+	'password' =>'',
 );
 
 2.visit http://xxx.xxx.xxx/route/route.php
