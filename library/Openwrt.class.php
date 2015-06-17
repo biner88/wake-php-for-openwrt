@@ -1,6 +1,6 @@
 <?php
 //Openwrt
-//#opkg install wol
+//#opkg install etherwake
 /**
  * filename : Openwrt.class.php
  * author : biner
