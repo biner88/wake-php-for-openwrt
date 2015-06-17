@@ -16,3 +16,6 @@ return array(
 4.click "submit"
 
 5.Add to the main screen
+
+中文用户请访问 :
+https://www.biner.me/wake-php-for-openwrt
