@@ -63,13 +63,12 @@ body{
 </head>
 <?php
 if (isset($_GET['mac'])) {
-	// include('library/Openwrt.class.php');
-	// $config = include('config.php');
-	// $Openwrt = new Openwrt();
-	// //$Openwrt->clear();
-	// $Openwrt->login($config);
-	// $result = $Openwrt->setWol($_GET['mac']);
-	$result = 0;
+	include('library/Openwrt.class.php');
+	$config = include('config.php');
+	$Openwrt = new Openwrt();
+	//$Openwrt->clear();
+	$Openwrt->login($config);
+	$result = $Openwrt->setWol($_GET['mac']);
 }
 ?>
 <body>
