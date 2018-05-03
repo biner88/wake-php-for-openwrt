@@ -9,8 +9,30 @@
 class Openwrt{
     protected $url='';
     protected $cookie_file=null;
-    public function __construct(){
-        //$this->cookie_file ='';
+    public function __construct($config){
+      $this->url         = $config['url'];
+      $this->username    = $config['username'];
+      $this->password    = $config['password'];
+
+      if (isset($_SESSION['route']['stok'])) {
+        $this->cookie_file = $_SESSION['route']['cookie_file'];
+        return $_SESSION['route']['stok'];
+      }else{
+      if(!$this->username || !$this->password){
+        throw new Exception("Username and Password is Required!", 1);
+      }
+      //create cookie file
+      $this->cookie_file = tempnam('./temp','cookie');
+      $result = $this->_eaPost('',array('username'=>$this->username,'password'=>$this->password));
+      preg_match ('/\/cgi-bin\/luci\/;stok=([0-9A-Za-z]{32})\//i', $result, $matches);
+        if(isset($matches[1])){
+          $_SESSION['route']['cookie_file'] = $this->cookie_file;
+          return $_SESSION['route']['stok'] = $matches[1];
+        }else{
+          unlink($this->cookie_file);
+          return false;
+        }
+      }
     }
     /**
      * [setWol wake pc]
@@ -52,40 +74,11 @@ class Openwrt{
      * [clear description]
      * @return [type] [description]
      */
-    public function clear(){
+    public function logout(){
         unlink($this->cookie_file);
         unset($_SESSION['route']);
     }
-    /**
-     * [login description]
-     * @return [type] [description]
-     */
-    public function login($config){
-        $this->url         = $config['url'];
-        $this->username    = $config['username'];
-        $this->password    = $config['password'];
 
-
-        if (isset($_SESSION['route']['stok'])) {
-        	$this->cookie_file = $_SESSION['route']['cookie_file'];
-        	return $_SESSION['route']['stok'];
-        }else{
-			if(!$this->username || !$this->password){
-                throw new Exception("Username and Password is Required!", 1);
-			}
-            //create cookie file
-            $this->cookie_file = tempnam('./temp','cookie');
-            $result = $this->_eaPost('',array('username'=>$this->username,'password'=>$this->password));
-            preg_match ('/\/cgi-bin\/luci\/;stok=([0-9A-Za-z]{32})\//i', $result, $matches);
-	        if(isset($matches[1])){
-				$_SESSION['route']['cookie_file'] = $this->cookie_file;
-				return $_SESSION['route']['stok'] = $matches[1];
-	        }else{
-	        	unlink($this->cookie_file);
-	        	return false;
-	        }
-        }
-    }
     /**
      * [_eaPost description]
      * @param  string $url    [description]

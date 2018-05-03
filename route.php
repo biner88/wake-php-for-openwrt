@@ -20,7 +20,7 @@ body{
 	margin-top: 20px;
 }
 .input{
-	
+
 }
 .input input{
 	height: 30px;
@@ -65,10 +65,11 @@ body{
 if (isset($_GET['mac'])) {
 	include('library/Openwrt.class.php');
 	$config = include('config.php');
-	$Openwrt = new Openwrt();
-	//$Openwrt->clear();
-	$Openwrt->login($config);
+	$Openwrt = new Openwrt($config);
 	$result = $Openwrt->setWol($_GET['mac']);
+	
+	//$Openwrt->logout();
+	//$result = $Openwrt->getOnline();
 }
 ?>
 <body>
