@@ -7,6 +7,8 @@
  * modify_time : 2015-06-17
  */
 class Openwrt{
+    protected $url='';
+    protected $cookie_file=null;
     public function __construct(){
         //$this->cookie_file ='';
     }
@@ -29,7 +31,7 @@ class Openwrt{
      */
     public function getOnline(){
         $result            = $this->_eaPost('?status=1');
-        $json = json_decode($result,true);
+        $json = json_decode($result,true);print_r($result);
         $mac = array();
         if ($json['wifinets']) {
             foreach ($json['wifinets'] as $key => $value) {
@@ -63,7 +65,7 @@ class Openwrt{
         $this->username    = $config['username'];
         $this->password    = $config['password'];
 
-        
+
         if (isset($_SESSION['route']['stok'])) {
         	$this->cookie_file = $_SESSION['route']['cookie_file'];
         	return $_SESSION['route']['stok'];
@@ -93,14 +95,14 @@ class Openwrt{
      */
     public function _eaPost($url='',$body=array(),$method='post'){
         $ch   = curl_init();
-        if ($url) {
+        if ($url && isset($_SESSION)) {
             $url = $this->url.'/cgi-bin/luci/;stok='.$_SESSION['route']['stok'].$url;
         }else{
             $url = $this->url.'/cgi-bin/luci';
         }
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_REFERER, ''); 
+        curl_setopt($ch, CURLOPT_REFERER, '');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -115,5 +117,5 @@ class Openwrt{
     }
 }
 
-        
+
  ?>
